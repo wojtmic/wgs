@@ -52,6 +52,12 @@ class Button(Gtk.Button):
     def on_scroll_down(self, widget, event):
         pass
 
+    def on_scroll_left(self, widget, event):
+        pass
+
+    def on_scroll_right(self, widget, event):
+        pass
+
     def on_scroll(self, widget, event):
         """!!DO NOT USE!!
         This function is used internally to handle scroll events.
@@ -64,3 +70,7 @@ class Button(Gtk.Button):
             self.on_scroll_up(widget, event)
         elif event.direction == Gdk.ScrollDirection.DOWN:
             self.on_scroll_down(widget, event)
+        elif event.direction == Gdk.ScrollDirection.LEFT:
+            self.on_scroll_left(widget, event)
+        elif event.direction == Gdk.ScrollDirection.RIGHT:
+            self.on_scroll_right(widget, event)

@@ -75,10 +75,10 @@ class Button(Gtk.Button):
         """
 
         if event.direction == Gdk.ScrollDirection.UP:
-            self.on_scroll_up(widget, event)
+            self.on_scroll_up()
         elif event.direction == Gdk.ScrollDirection.DOWN:
-            self.on_scroll_down(widget, event)
+            self.on_scroll_down()
         elif event.direction == Gdk.ScrollDirection.LEFT:
-            self.on_scroll_left(widget, event)
+            self.on_scroll_left()
         elif event.direction == Gdk.ScrollDirection.RIGHT:
-            self.on_scroll_right(widget, event)
+            self.on_scroll_right()

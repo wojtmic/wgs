@@ -16,6 +16,10 @@ class Button(Gtk.Button):
         else:
             return Gtk.Button.do_propagation(self, event)
 
+    def set_label(self, label: str):
+        """Sets the label of the button"""
+        self.set_label(label)
+
     def on_click(self):
         "Defines on left click event"
         pass

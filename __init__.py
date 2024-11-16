@@ -92,6 +92,7 @@ class WidgetWindow(Gtk.Window):
     
     def close(self):
         self.destroy()
+        return True
     
     def apply_css(self, css: str):
         """Applies CSS from a string"""

@@ -1,6 +1,8 @@
 from __init__ import WidgetWindow
 from widgets.button import Button
 
+import subprocess
+
 class MyButton(Button):
     def __init__(self, label: str):
         Button.__init__(self, label)
@@ -9,7 +11,8 @@ class MyButton(Button):
         print("Pressed!")
     
     def on_click_right(self):
-        print("Right click!")
+        win.close()
+        subprocess.run(['pavucontrol'])
     
     def on_click_middle(self):
         print("Middle click!")

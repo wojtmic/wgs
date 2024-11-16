@@ -26,7 +26,7 @@ class WidgetWindow(Gtk.Window):
         self.connect("delete-event", self.on_delete_event)
 
         if destroy_on_lose_focus:
-            self.connect("focus-out-event", self.close())
+            self.connect("focus-out-event", self.close)
 
         self.set_can_focus(True)
         self.grab_focus()

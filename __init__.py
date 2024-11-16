@@ -1,7 +1,7 @@
 import gi
 gi.require_version('Gtk', '3.0')
 gi.require_version('GtkLayerShell', '0.1')
-from gi.repository import Gtk, GtkLayerShell, Gdk # type: ignore
+from gi.repository import Gtk, GtkLayerShell, Gdk, GLib # type: ignore
 
 class WidgetWindow(Gtk.Window):
     def __init__(self, destroy_on_lose_focus=True):
@@ -27,7 +27,7 @@ class WidgetWindow(Gtk.Window):
 
         if destroy_on_lose_focus:
             self.add_events(Gdk.EventMask.FOCUS_CHANGE_MASK)
-            self.connect("focus-out-event", self.close)
+            self.connect("focus-out-event", self.on_focus_lost)
 
         self.set_can_focus(True)
         self.grab_focus()
@@ -93,6 +93,11 @@ class WidgetWindow(Gtk.Window):
     def close(self):
         self.destroy()
         return True
+    
+    def on_focus_lost(self, widget, event):
+        """Handle focus loss event"""
+        GLib.idle_add(self.destroy)  # Schedule destroy on main thread
+        return False  # Allow event propagation
     
     def apply_css(self, css: str):
         """Applies CSS from a string"""

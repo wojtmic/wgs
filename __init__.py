@@ -29,17 +29,17 @@ class WidgetWindow(Gtk.Window):
         self.grab_focus()
         GtkLayerShell.set_keyboard_interactivity(self, True)
         
-        # Add content
-        # button = Gtk.Button(label="Floating Window")
-        # button.connect("clicked", self.on_button_clicked)
-        # self.add(button)
-        
         # Close on Escape
         self.connect("key-press-event", self.on_key_press)
+    
+    def set_size(self, width: int, height: int):
+        """Sets the size of the window"""
+        self.set_default_size(width, height)
+    
+    def set_window_pos(self, x: int, y: int):
+        """Sets the position of the window"""
+        self.move(x, y)
 
-    def on_button_clicked(self, widget):
-        print("Clicked!")
-        
     def on_key_press(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
             self.destroy()  # Use destroy instead of main_quit

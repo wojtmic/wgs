@@ -16,6 +16,10 @@ class Button(Gtk.Button):
         else:
             return Gtk.Button.do_propagation(self, event)
 
+    def set_size(self, width: int, height: int):
+        """Sets the size of the button"""
+        self.set_size_request(width, height)
+
     def set_label(self, label: str):
         """Sets the label of the button"""
         self.set_label(label)

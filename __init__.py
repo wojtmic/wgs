@@ -56,3 +56,17 @@ class WidgetWindow(Gtk.Window):
     
     def close(self):
         self.destroy()
+    
+    def apply_css(self, css: str):
+        """Applies CSS from a string"""
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_data(css.encode())
+        context = self.get_style_context()
+        context.add_provider_for_screen(self.get_screen(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+    def apply_css_file(self, path: str):
+        """Applies CSS from a file"""
+        css_provider = Gtk.CssProvider()
+        css_provider.load_from_path(path)
+        context = self.get_style_context()
+        context.add_provider_for_screen(self.get_screen(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

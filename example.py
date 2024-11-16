@@ -1,0 +1,27 @@
+from __init__ import WidgetWindow
+from widgets.button import Button
+
+class MyButton(Button):
+    def __init__(self, label: str):
+        Button.__init__(self, label)
+    
+    def on_click(self, widget, event):
+        print("Pressed!")
+    
+    def on_click_right(self, widget, event, button):
+        print("Right click!")
+    
+    def on_click_middle(self, widget, event, button):
+        print("Middle click!")
+    
+    def on_scroll_down(self, widget, event):
+        print("Scrolled down!")
+    
+    def on_scroll_up(self, widget, event):
+        print("Scrolled up!")
+
+win = WidgetWindow()
+button = MyButton("My Button")
+win.add(button)
+
+win.run()

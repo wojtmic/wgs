@@ -3,10 +3,9 @@
 Simple, yet powerful GTK widget creation utility to truly spice up your rice.
 
 ## Usage
-Simple: you write a .json (or .jsonc) file. You put your config in it, then you run `wgs -f <path>`.
-Example config:
-```json
--todo-
+The one scary part is Python. You need to know the basics and OOP, then you are good to go. Example:
+```python
+-TODO-
 ```
 
 ## Installation

@@ -16,15 +16,15 @@ class Button(Gtk.Button):
         else:
             return Gtk.Button.do_propagation(self, event)
 
-    def on_click(self, widget, event):
+    def on_click(self):
         "Defines on left click event"
         pass
     
-    def on_click_right(self, widget, event, button):
+    def on_click_right(self):
         "Defines on right click event"
         pass
 
-    def on_click_middle(self, widget, event, button):
+    def on_click_middle(self):
         "Defines on middle click event"
         pass
     
@@ -38,24 +38,28 @@ class Button(Gtk.Button):
         """
         
         if event.button == 1:
-            self.on_click(widget, event)
+            self.on_click()
         elif event.button == 3:
-            self.on_click_right(widget, event, 3)
+            self.on_click_right()
         elif event.button == 2:
-            self.on_click_middle(widget, event, 2)
+            self.on_click_middle()
         else:
-            self.on_click(widget, event)
+            self.on_click()
 
-    def on_scroll_up(self, widget, event):
+    def on_scroll_up(self):
+        """Defines on scroll up event"""
         pass
 
-    def on_scroll_down(self, widget, event):
+    def on_scroll_down(self):
+        """Defines on scroll down event"""
         pass
 
-    def on_scroll_left(self, widget, event):
+    def on_scroll_left(self):
+        """Defines on scroll left event"""
         pass
 
-    def on_scroll_right(self, widget, event):
+    def on_scroll_right(self):
+        """Defines on scroll right event"""
         pass
 
     def on_scroll(self, widget, event):

@@ -53,3 +53,6 @@ class WidgetWindow(Gtk.Window):
     def run(self):
         self.show_all()
         Gtk.main()
+    
+    def close(self):
+        self.destroy()

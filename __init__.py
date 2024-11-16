@@ -39,6 +39,38 @@ class WidgetWindow(Gtk.Window):
     def set_window_pos(self, x: int, y: int):
         """Sets the position of the window"""
         self.move(x, y)
+    
+    def snap_window(self, wherex: str, wherey: str):
+        """Snaps the window to the edge of the screen"""
+        valid_x = ['left', 'right', 'center']
+        valid_y = ['top', 'bottom', 'center']
+        if wherex not in valid_x or wherey not in valid_y:
+            raise ValueError(f"Invalid position. X must be in {valid_x}, Y must be in {valid_y}")
+    
+        # For Wayland/Hyprland, use GTK Layer Shell anchoring
+        if wherex == "left":
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, True)
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, False)
+            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, 0)
+        elif wherex == "right":
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, True)
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, False)
+            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, 0)
+        else:  # center
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, False)
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, False)
+    
+        if wherey == "top":
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, True)
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, False)
+            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, 0)
+        elif wherey == "bottom":
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, True)
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, False)
+            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 0)
+        else:  # center
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, False)
+            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, False)
 
     def on_key_press(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:

@@ -21,6 +21,7 @@ class MyButton(Button):
         print("Scrolled up!")
 
 win = WidgetWindow()
+win.snap_window("left", "top")
 button = MyButton("My Button")
 win.add(button)
 

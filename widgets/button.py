@@ -4,7 +4,7 @@ from gi.repository import Gtk, Gdk # type: ignore
 
 class Button(Gtk.Button):
     def __init__(self, label: str):
-        Gtk.Button.__init__(self, label=label, selfdestruct=True)
+        Gtk.Button.__init__(self, label=label)
         self.add_events(Gdk.EventMask.SCROLL_MASK)
 
         self.connect("button-press-event", self.on_press)

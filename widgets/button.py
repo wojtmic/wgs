@@ -20,10 +20,6 @@ class Button(Gtk.Button):
         """Sets the size of the button"""
         self.set_size_request(width, height)
 
-    def set_label(self, label: str):
-        """Sets the label of the button"""
-        self.set_label(label)
-
     def on_click(self):
         "Defines on left click event"
         pass

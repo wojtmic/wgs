@@ -4,7 +4,7 @@ gi.require_version('GtkLayerShell', '0.1')
 from gi.repository import Gtk, GtkLayerShell, Gdk # type: ignore
 
 class WidgetWindow(Gtk.Window):
-    def __init__(self):
+    def __init__(self, destroy_on_lose_focus=True):
         Gtk.Window.__init__(self, title="My Widget")
         self.set_default_size(200, 100)
         
@@ -24,6 +24,9 @@ class WidgetWindow(Gtk.Window):
         # Connect destroy signal
         self.connect("destroy", Gtk.main_quit)
         self.connect("delete-event", self.on_delete_event)
+
+        if destroy_on_lose_focus:
+            self.connect("focus-out-event", self.close())
 
         self.set_can_focus(True)
         self.grab_focus()

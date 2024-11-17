@@ -38,6 +38,13 @@ class WidgetWindow(Gtk.Window):
         # Close on Escape
         self.connect("key-press-event", self.on_key_press)
     
+    def set_orientation(self, orientation: bool):
+        """Sets the orientation of the container"""
+        if orientation:
+            self.container.set_orientation(Gtk.Orientation.HORIZONTAL)
+        else:
+            self.container.set_orientation(Gtk.Orientation.VERTICAL)
+
     def set_size(self, width: int, height: int):
         """Sets the size of the window"""
         self.set_default_size(width, height)

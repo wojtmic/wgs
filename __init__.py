@@ -4,9 +4,15 @@ gi.require_version('GtkLayerShell', '0.1')
 from gi.repository import Gtk, GtkLayerShell, Gdk, GLib # type: ignore
 
 class WidgetWindow(Gtk.Window):
-    def __init__(self):
+    def __init__(self, orientation=Gtk.Orientation.VERTICAL):
         Gtk.Window.__init__(self, title="My Widget")
         self.set_default_size(200, 100)
+
+        self._container = Gtk.Box(orientation=orientation, spacing=6)
+        Gtk.Window.add(self, self.container)
+
+        self._expand_x = False
+        self._expand_y = False
         
         # Initialize as layer shell window
         GtkLayerShell.init_for_window(self)
@@ -46,31 +52,34 @@ class WidgetWindow(Gtk.Window):
         valid_y = ['top', 'bottom', 'center']
         if wherex not in valid_x or wherey not in valid_y:
             raise ValueError(f"Invalid position. X must be in {valid_x}, Y must be in {valid_y}")
-    
-        # For Wayland/Hyprland, use GTK Layer Shell anchoring
-        if wherex == "left":
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, True)
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, False)
-            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, 0)
-        elif wherex == "right":
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, True)
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, False)
-            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, 0)
-        else:  # center
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, False)
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, False)
-    
-        if wherey == "top":
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, True)
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, False)
-            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, 0)
-        elif wherey == "bottom":
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, True)
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, False)
-            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 0)
-        else:  # center
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, False)
-            GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, False)
+
+        # Only apply X anchoring if not expanded
+        if not self._expand_x:
+            if wherex == "left":
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, True)
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, False)
+                GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, 0)
+            elif wherex == "right":
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, True)
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, False)
+                GtkLayerShell.set_margin(self, GtkLayerShell.Edge.RIGHT, 0)
+            else:  # center
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, False)
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, False)
+
+        # Only apply Y anchoring if not expanded
+        if not self._expand_y:
+            if wherey == "top":
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, True)
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, False)
+                GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, 0)
+            elif wherey == "bottom":
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, True)
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, False)
+                GtkLayerShell.set_margin(self, GtkLayerShell.Edge.BOTTOM, 0)
+            else:  # center
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, False)
+                GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, False)
 
     def on_key_press(self, widget, event):
         if event.keyval == Gdk.KEY_Escape:
@@ -108,3 +117,25 @@ class WidgetWindow(Gtk.Window):
         css_provider.load_from_path(path)
         context = self.get_style_context()
         context.add_provider_for_screen(self.get_screen(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+    
+    def expand(self, x: bool, y: bool):
+        """Autoexpands to fit the entire X or Y axis"""
+        self._expand_x = x
+        self._expand_y = y
+        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.LEFT, x)
+        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.RIGHT, x)
+        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.TOP, y)
+        GtkLayerShell.set_anchor(self, GtkLayerShell.Edge.BOTTOM, y)
+    
+    @property
+    def container(self):
+        return self._container
+
+    def add(self, widget):
+        self.container.pack_start(widget, False, False, 0)
+    
+    def add_start(self, widget):
+        self.container.pack_start(widget, False, False, 0)
+    
+    def add_end(self, widget):
+        self.container.pack_end(widget, False, False, 0)
